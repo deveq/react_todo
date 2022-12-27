@@ -51,7 +51,7 @@ function App() {
   return (
     <Container>
       <Contents>
-        <TodoListContainer>
+        <TodoListContainer data-testid="todoList">
           {/* <TodoItem label="추가된 할 일" onDelete={() => alert('삭제')} /> */}
           {todoList.map((item, index) => (
             <TodoItem
