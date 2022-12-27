@@ -1,65 +1,75 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import styled from 'styled-components';
+import { Button, Input, TodoItem } from 'components';
 
 const Container = styled.div`
-  text-align: center;
-`;
-
-const Header = styled.header`
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: column; ;
 `;
 
-const AppLogo = styled.img`
-  height: 40vmin;
-  pointer-events: none;
-
-  @media (prefers-reduced-motion: no-preference) {
-    animation: App-logo-spin infinite 20s linear;
-  }
-
-  @keyframes App-logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
-  }
+const Contents = styled.div`
+  display: flex;
+  background-color: #ffffff;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
 `;
 
-const AppLink = styled.a`
-  color: #61dafb;
+const InputContainer = styled.div`
+  display: flex;
+`;
+
+const TodoListContainer = styled.div`
+  min-width: 350px;
+  height: 400px;
+  overflow-y: scroll;
+  border: 1px solid #bdbdbd;
+  margin-bottom: 20px;
 `;
 
 function App() {
+  const [todo, setTodo] = useState('');
+  const [todoList, setTodoList] = useState<string[]>([]);
+
+  const addTodo = (): void => {
+    if (todo) {
+      setTodoList([...todoList, todo]);
+      setTodo('');
+    }
+  };
+
+  const deleteTodo = (index: number): void => {
+    const list = [...todoList];
+    list.splice(index, 1);
+    setTodoList(list);
+  };
+
   return (
     <Container>
-      <Header>
-        <AppLogo
-          src={logo}
-          alt="logo"
-        />
-        <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-
-        </p>
-        <AppLink
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-        >
-        Learn React
-
-        </AppLink>
-      </Header>
+      <Contents>
+        <TodoListContainer>
+          {/* <TodoItem label="추가된 할 일" onDelete={() => alert('삭제')} /> */}
+          {todoList.map((item, index) => (
+            <TodoItem
+              key={item}
+              label={item}
+              onDelete={() => deleteTodo(index)}
+            />
+          ))}
+        </TodoListContainer>
+        <InputContainer>
+          <Input
+            placeholder="할 일을 입력해 주세요"
+            value={todo}
+            onChange={(text) => setTodo(text)}
+          />
+          <Button label="추가" onClick={addTodo} />
+        </InputContainer>
+      </Contents>
     </Container>
   );
 }
