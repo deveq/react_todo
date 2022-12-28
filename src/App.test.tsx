@@ -81,4 +81,16 @@ describe('<App />', () => {
 
     expect(todoList.childElementCount).toBe(length);
   });
+
+  it('loads localStorage data', () => {
+    const array = ['Todo 1', 'Todo 2', 'Todo 3'];
+    localStorage.setItem('todoList', JSON.stringify(array));
+
+    render(<App />);
+
+    expect(screen.getByText(array[0])).toBeInTheDocument();
+    expect(screen.getByText(array[1])).toBeInTheDocument();
+    expect(screen.getByText(array[2])).toBeInTheDocument();
+    expect(screen.getAllByText('삭제')).toHaveLength(3);
+  });
 });
